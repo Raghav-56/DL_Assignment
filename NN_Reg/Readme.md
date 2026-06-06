@@ -15,18 +15,20 @@ A comparative study of neural network training with and without regularization t
 
 ## Network Architecture
 
-All three models share the same base architecture: a 3-hidden-layer Feedforward Neural Network:
+All three models share the same base architecture: a deliberately **over-parameterized** 5-hidden-layer Feedforward Neural Network (~1.6 M parameters). The large capacity guarantees the baseline clearly overfits, making the regularization benefit unmistakable.
 
 ```txt
 Input (784 features, flattened 28×28)
     ↓
-Linear (784 → 256) → ReLU → [Dropout?]
+Linear (784 → 1024) → ReLU → [Dropout?]
     ↓
-Linear (256 → 128) → ReLU → [Dropout?]
+Linear (1024 → 512) → ReLU → [Dropout?]
     ↓
-Linear (128 → 64)  → ReLU → [Dropout?]
+Linear (512 → 256)  → ReLU → [Dropout?]
     ↓
-Linear (64 → 10)   → Output (Logits for Cross-Entropy Loss)
+Linear (256 → 128)  → ReLU → [Dropout?]
+    ↓
+Linear (128 → 10)   → Output (Logits for Cross-Entropy Loss)
 ```
 
 ### Three Variants
@@ -35,22 +37,22 @@ Linear (64 → 10)   → Output (Logits for Cross-Entropy Loss)
 |-----------------------|-------------|-------------------|
 | **Baseline** (No Reg) | 0.0         | 0                 |
 | **Dropout**           | 0.5         | 0                 |
-| **L2 Regularization** | 0.0         | 1e-3              |
+| **L2 Regularization** | 0.0         | 5e-4              |
 
 ### Design Rationale
 
-- **Wide hidden layers (256, 128, 64):** Intentionally over-parameterized so the regularization effect is clearly observable.
+- **Wide hidden layers (1024, 512, 256, 128):** Intentionally over-parameterized so the regularization effect is clearly observable.
 - **No BatchNorm:** Omitted to isolate the effect of regularization techniques.
 - **High dropout (0.5):** The classic Hinton recommendation; forces the network to learn redundant, distributed representations.
-- **L2 via weight_decay:** Penalizes large weights in the optimizer, equivalent to adding $\frac{\lambda}{2} \|\mathbf{w}\|_2^2$ to the loss.
+- **L2 via weight_decay (λ=5e-4):** Penalizes large weights in the optimizer, equivalent to adding $\frac{\lambda}{2} \|\mathbf{w}\|_2^2$ to the loss.
 
 ## Training Configuration
 
 - **Optimizer:** Adam (learning rate = 0.001)
 - **Loss Function:** CrossEntropyLoss
-- **Epochs:** 20 (with early stopping)
+- **Epochs:** 30 (full run, no early stopping)
 - **Batch Size:** 64
-- **Early Stopping Patience:** 5 epochs
+- **Train/Val Split:** 40,000 training / 20,000 validation (smaller train set increases overfitting pressure)
 - **Preprocessing:** MNIST standardization (Mean = 0.1307, Std = 0.3081)
 
 ## Results
