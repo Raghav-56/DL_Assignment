@@ -60,7 +60,7 @@ Linear (32 → 10)   → Output (Logits for Cross-Entropy Loss)
 
 ## Files
 
-- `train.ipynb` — Complete notebook with all implementation steps:
+- `train.ipynb`: Complete notebook with all implementation steps:
   1. Data loading and exploration
   2. Preprocessing (normalization, flattening)
   3. Model definition and configuration
@@ -70,7 +70,7 @@ Linear (32 → 10)   → Output (Logits for Cross-Entropy Loss)
   7. Confusion matrix and error analysis
   8. Model saving
 
-- `README.md` — This file
+- `README.md`: This file
 
 ## Key Implementation Highlights
 
