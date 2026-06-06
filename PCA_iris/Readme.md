@@ -47,6 +47,73 @@ PCA is scale-sensitive. Without standardization, features with larger magnitudes
 - **Sepal Width** contributes predominantly to PC2
 - Reconstruction MSE ≈ 0.021 (very low, indicating minimal information lost)
 
+## PCA for Feature Extraction & Visualization
+
+### 1. How PCA Helps in Visualization (4D to 2D Projection)
+
+High-dimensional datasets (like the 4-dimensional Iris dataset) cannot be directly visualized by human eyes. Traditional methods, such as a pairwise scatter matrix, show only two features at a time (e.g., Sepal Length vs. Sepal Width), which fails to capture the global structure and correlations of all features simultaneously.
+
+PCA solves this by finding a new 2D plane (spanned by PC1 and PC2) that captures the maximum possible variance of the 4D data.
+
+#### The 2D PCA Projection
+
+By projecting the 150 samples onto PC1 and PC2, we compress the data with minimal loss, revealing distinct species clusters:
+
+![2D PCA Scatter Plot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/pca_scatter.png)
+
+- **Cluster Separability:** **Setosa** forms a distinct, tight cluster that is perfectly linearly separable from the other two species. **Versicolor** and **Virginica** are also clearly grouped, showing only minor overlap where they are morphologically similar.
+- **Distribution Spread:** The dashed confidence ellipses ($\pm1$ standard deviation) show the direction and scale of each species' spread.
+
+#### The PCA Biplot (Samples + Loadings)
+
+The biplot overlays the original feature vectors (as arrows) onto the 2D projected space:
+
+![PCA Biplot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/biplot.png)
+
+- **Feature Alignment:** The arrows represent the loading vectors. Petal Length and Petal Width arrows point in almost the same direction along PC1, showing they are highly correlated.
+- **Separation Axes:** PC1 separates Setosa (left, negative PC1) from Virginica/Versicolor (right, positive PC1). PC2 captures the remaining variation in Sepal Width.
+
+---
+
+### 2. How PCA Helps in Feature Extraction
+
+Feature extraction is the process of transforming raw, high-dimensional features into a smaller set of highly informative, uncorrelated features. PCA achieves this through several mechanisms:
+
+#### A. Compression and Dimension Reduction
+
+PCA reduces the feature space of the Iris dataset by **50%** (from 4 features to 2 principal components) while retaining **95.81% of the total variance**. This represents a massive reduction in model input size with a negligible loss of information (only **4.19% lost**).
+
+#### B. Decorrelation of Features
+
+Original datasets often suffer from **multicollinearity** (highly correlated features). In Iris, Petal Length and Petal Width have a correlation coefficient close to 0.96. Feeding correlated features into machine learning models can cause instability.
+PCA extracts **principal components that are orthogonal (orthogonal eigenvectors)**, meaning they are completely uncorrelated ($Cov(PC1, PC2) = 0$). This improves the performance and training stability of downstream classifiers.
+
+#### C. Dominant Feature Identification (Loadings Heatmap)
+
+PCA calculates the contribution (loadings) of each raw feature to each principal component. This shows which original features are the most critical:
+
+![PCA Loadings Heatmap](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/loadings_heatmap.png)
+
+- **PC1 (72.96% variance):** Dominating features are **Petal Length (+0.581)** and **Petal Width (+0.566)**. These are the primary extracted features representing overall flower size.
+- **PC2 (22.85% variance):** Dominating feature is **Sepal Width (+0.923)**. This extracts independent shape variations.
+
+#### D. Noise Filtering
+
+By examining the **Scree Plot**, we can see how much information each component captures:
+
+![Scree Plot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/scree_plot.png)
+
+- The "elbow" occurs at PC2. PC3 (3.67%) and PC4 (0.52%) contain negligible variance.
+- Discarding PC3 and PC4 acts as a low-pass filter, stripping away random noise and keeping only the meaningful signal for modeling.
+
+#### E. Reconstruction Accuracy
+
+We can verify the quality of feature extraction by projecting the 2D PCs back to the original 4D space (inverse transform) and measuring the Reconstruction Mean Squared Error (MSE):
+
+![Reconstruction Error Plot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/reconstruction_error.png)
+
+- The overall reconstruction MSE is extremely low (**0.0419** in standardized units), proving that the extracted 2D features retain almost all of the original 4D shapes.
+
 ## Files
 
 - `train.ipynb`: Complete notebook with all implementation steps:
