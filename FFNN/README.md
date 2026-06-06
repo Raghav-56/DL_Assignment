@@ -5,30 +5,43 @@ A complete implementation of a Feedforward Neural Network (FFNN) for classifying
 ## Overview
 
 **Dataset:** MNIST (Modified National Institute of Standards and Technology)
+
 - Total samples: 70,000 (60,000 training + 10,000 test)
 - Image size: 28×28 pixels (grayscale)
 - Classes: 10 (digits 0-9)
 
 ## Network Architecture
 
-```
-Input Layer (784 neurons: 28×28 flattened)
+The model is a Feedforward Neural Network (FFNN) designed to classify 28×28 flattened MNIST images (784 inputs) into 10 digit classes.
+
+### Architecture Layout
+
+```txt
+Input (784 features)
     ↓
-Hidden Layer 1 (128 neurons + ReLU + BatchNorm + Dropout 0.2)
+Linear (784 → 128) → BatchNorm → ReLU → Dropout (0.2)
     ↓
-Hidden Layer 2 (64 neurons + ReLU + BatchNorm + Dropout 0.2)
+Linear (128 → 64)  → BatchNorm → ReLU → Dropout (0.2)
     ↓
-Hidden Layer 3 (32 neurons + ReLU + BatchNorm + Dropout 0.2)
+Linear (64 → 32)   → BatchNorm → ReLU → Dropout (0.2)
     ↓
-Output Layer (10 neurons + Softmax)
+Linear (32 → 10)   → Output (Logits for Cross-Entropy Loss)
 ```
 
-### Architecture Rationale
-- **Progressive dimensionality reduction:** 784 → 128 → 64 → 32 → 10 prevents overfitting
-- **ReLU activation:** Non-linear activation, avoids vanishing gradient problem
-- **Batch Normalization:** Stabilizes training, accelerates convergence
-- **Dropout (0.2):** Regularization technique to reduce overfitting
-- **CrossEntropyLoss:** Ideal for multi-class classification
+### Components and Rationale
+
+- **Input Layer (784):** Accepts flattened 28×28 grayscale images standardized to Mean = 0.1307, Std = 0.3081.
+- **Hidden Layers (128 → 64 → 32):**
+  - **Linear (`nn.Linear`):** Maps features to lower-dimensional spaces.
+  - **Batch Normalization (`nn.BatchNorm1d`):** Stabilizes and accelerates training by normalizing activations across the batch.
+  - **ReLU Activation:** Introduces non-linearity ($f(x) = \max(0, x)$) and avoids vanishing gradients.
+  - **Dropout (0.2):** Randomly deactivates 20% of neurons during training to prevent overfitting.
+- **Output Layer (10):** Maps the final 32 hidden units to 10 class logits. During training, PyTorch's `nn.CrossEntropyLoss` internally applies LogSoftmax.
+
+### Design Rationale
+
+- **Progressive Dimensionality Reduction:** The transition of $784 \to 128 \to 64 \to 32 \to 10$ acts as a feature bottleneck to prevent overfitting.
+- **Regularization & Normalization:** Combining Batch Normalization and Dropout forces the network to learn more robust, redundant representations and improves test set generalization (>97% accuracy).
 
 ## Training Configuration
 
@@ -62,16 +75,19 @@ Output Layer (10 neurons + Softmax)
 ## Key Implementation Highlights
 
 ### Data Preprocessing
+
 - Normalization: Pixel values normalized to [0,1] range
 - Standardization: Mean = 0.1307, Std = 0.3081
 - Flattening: 28×28 images → 784-dimensional vectors
 
 ### Training Loop
+
 - Forward pass → Loss computation → Backward pass → Parameter update
 - Validation after each epoch to monitor overfitting
 - Early stopping to prevent unnecessary training
 
 ### Visualization
+
 - Training vs Validation loss and accuracy curves
 - Sample predictions (correct and incorrect)
 - Confusion matrix (raw and normalized)
@@ -106,6 +122,7 @@ Output Layer (10 neurons + Softmax)
 ## References & Resources
 
 See `links.txt` and `links_ai.txt` for comprehensive learning resources including:
+
 - PyTorch tutorials and documentation
 - Neural network theory and backpropagation explanations
 - MNIST dataset information
