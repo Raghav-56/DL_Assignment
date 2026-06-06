@@ -1,0 +1,16 @@
+[project]
+name = "assignment"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch",
+    "torchvision",
+    "numpy",
+    "matplotlib",
+    "pandas",
+    "scikit-learn",
+    "seaborn",
+    "ipykernel>=7.2.0",
+]
