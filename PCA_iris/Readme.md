@@ -59,7 +59,7 @@ PCA solves this by finding a new 2D plane (spanned by PC1 and PC2) that captures
 
 By projecting the 150 samples onto PC1 and PC2, we compress the data with minimal loss, revealing distinct species clusters:
 
-![2D PCA Scatter Plot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/pca_scatter.png)
+![2D PCA Scatter Plot](pca_scatter.png)
 
 - **Cluster Separability:** **Setosa** forms a distinct, tight cluster that is perfectly linearly separable from the other two species. **Versicolor** and **Virginica** are also clearly grouped, showing only minor overlap where they are morphologically similar.
 - **Distribution Spread:** The dashed confidence ellipses ($\pm1$ standard deviation) show the direction and scale of each species' spread.
@@ -68,7 +68,7 @@ By projecting the 150 samples onto PC1 and PC2, we compress the data with minima
 
 The biplot overlays the original feature vectors (as arrows) onto the 2D projected space:
 
-![PCA Biplot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/biplot.png)
+![PCA Biplot](biplot.png)
 
 - **Feature Alignment:** The arrows represent the loading vectors. Petal Length and Petal Width arrows point in almost the same direction along PC1, showing they are highly correlated.
 - **Separation Axes:** PC1 separates Setosa (left, negative PC1) from Virginica/Versicolor (right, positive PC1). PC2 captures the remaining variation in Sepal Width.
@@ -92,7 +92,7 @@ PCA extracts **principal components that are orthogonal (orthogonal eigenvectors
 
 PCA calculates the contribution (loadings) of each raw feature to each principal component. This shows which original features are the most critical:
 
-![PCA Loadings Heatmap](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/loadings_heatmap.png)
+![PCA Loadings Heatmap](loadings_heatmap.png)
 
 - **PC1 (72.96% variance):** Dominating features are **Petal Length (+0.581)** and **Petal Width (+0.566)**. These are the primary extracted features representing overall flower size.
 - **PC2 (22.85% variance):** Dominating feature is **Sepal Width (+0.923)**. This extracts independent shape variations.
@@ -101,7 +101,7 @@ PCA calculates the contribution (loadings) of each raw feature to each principal
 
 By examining the **Scree Plot**, we can see how much information each component captures:
 
-![Scree Plot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/scree_plot.png)
+![Scree Plot](scree_plot.png)
 
 - The "elbow" occurs at PC2. PC3 (3.67%) and PC4 (0.52%) contain negligible variance.
 - Discarding PC3 and PC4 acts as a low-pass filter, stripping away random noise and keeping only the meaningful signal for modeling.
@@ -110,7 +110,7 @@ By examining the **Scree Plot**, we can see how much information each component 
 
 We can verify the quality of feature extraction by projecting the 2D PCs back to the original 4D space (inverse transform) and measuring the Reconstruction Mean Squared Error (MSE):
 
-![Reconstruction Error Plot](file:///d:/ragha/UIET/Sem_6/OEIT601_Deep_Learning_(T)/Assignment/PCA_iris/reconstruction_error.png)
+![Reconstruction Error Plot](reconstruction_error.png)
 
 - The overall reconstruction MSE is extremely low (**0.0419** in standardized units), proving that the extracted 2D features retain almost all of the original 4D shapes.
 
